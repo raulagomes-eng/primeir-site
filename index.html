@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guia Visual de Redes para Automação</title>
     <style>
+        /* Cores e Variáveis Modernas */
         :root {
-            --primary: #1e293b;
+            --primary: #0f172a;
             --accent: #2563eb;
             --accent-light: #eff6ff;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #334155;
             --success: #16a34a;
+            --success-bg: #f0fdf4;
             --danger: #dc2626;
+            --danger-bg: #fef2f2;
             --border: #e2e8f0;
         }
 
@@ -28,7 +31,7 @@
             background-color: var(--bg);
             color: var(--text);
             padding: 2rem 1rem;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .container {
@@ -36,20 +39,20 @@
             margin: 0 auto;
         }
 
+        /* Banner Principal */
         header {
             text-align: center;
             margin-bottom: 2rem;
             padding: 2.5rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary), #0f172a);
+            background: linear-gradient(135deg, var(--primary), #1e293b);
             color: white;
             border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
             font-size: 2.2rem;
             margin-bottom: 0.5rem;
-            font-weight: 700;
         }
 
         header p {
@@ -57,7 +60,7 @@
             font-size: 1.1rem;
         }
 
-        /* Sistema de Abas */
+        /* Menu de Abas */
         .tabs-nav {
             display: flex;
             justify-content: center;
@@ -89,24 +92,24 @@
             color: white;
         }
 
+        /* Controle de Visibilidade das Abas */
         .tab-content {
             display: none;
         }
 
         .tab-content.active {
             display: block;
-            animation: slideUp 0.4s ease forwards;
         }
 
-        /* Aba 1: Cabos Industriais */
+        /* --- ABA 1: CABOS --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .card {
+        .cabo-card {
             background: var(--card-bg);
             padding: 2rem;
             border-radius: 10px;
@@ -116,37 +119,42 @@
             transition: all 0.2s ease;
         }
 
-        .card:hover {
+        .cabo-card:hover {
             transform: translateY(-4px);
             border-color: var(--accent);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
         }
 
-        .card.active {
+        .cabo-card.active {
             border-color: var(--accent);
             background-color: var(--accent-light);
         }
 
-        .card h3 {
+        .cabo-card h3 {
             color: var(--primary);
-            font-size: 1.25rem;
         }
 
-        .explanation-box {
+        /* Caixas de Explicação dos Cabos */
+        .cabo-text {
+            display: none;
             padding: 2rem;
             background-color: var(--card-bg);
             border-left: 6px solid var(--accent);
             border-radius: 8px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.3s ease;
         }
 
-        .explanation-box h4 {
+        .cabo-text.active {
+            display: block;
+        }
+
+        .cabo-text h4 {
             color: var(--primary);
             font-size: 1.3rem;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
         }
 
-        /* Aba 2: Topologias */
+        /* --- ABA 2: TOPOLOGIAS --- */
         .buttons-group {
             display: flex;
             justify-content: center;
@@ -175,27 +183,27 @@
             color: white;
         }
 
-        .topo-details {
+        /* Conteúdo das Topologias */
+        .topo-info {
             display: none;
             background: var(--card-bg);
             padding: 2rem;
             border-radius: 10px;
             border: 1px solid var(--border);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.3s ease;
         }
 
-        .topo-details.active {
+        .topo-info.active {
             display: block;
-            animation: fadeIn 0.3s ease forwards;
         }
 
-        .topo-details h3 {
+        .topo-info h3 {
             color: var(--primary);
-            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
 
-        .pros-cons-container {
+        .pros-cons-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
@@ -208,13 +216,10 @@
             border: 1px solid var(--border);
         }
 
-        .panel.pros { background-color: #f0fdf4; border-color: #bbf7d0; }
-        .panel.cons { background-color: #fef2f2; border-color: #fecaca; }
+        .panel.pros { background-color: var(--success-bg); border-color: #bbf7d0; }
+        .panel.cons { background-color: var(--danger-bg); border-color: #fecaca; }
 
         .panel h4 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
             font-size: 1.1rem;
             margin-bottom: 0.75rem;
         }
@@ -222,23 +227,13 @@
         .panel.pros h4 { color: var(--success); }
         .panel.cons h4 { color: var(--danger); }
 
-        ul {
-            padding-left: 1.25rem;
-        }
+        ul { padding-left: 1.25rem; }
+        li { margin-bottom: 0.5rem; }
 
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Animações */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Animação Simples */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -247,135 +242,126 @@
     <div class="container">
         <header>
             <h1>Guia Visual de Redes para Automação</h1>
-            <p>Conceitos essenciais de infraestrutura de dados para o chão de fábrica</p>
+            <p>Infraestrutura de dados para o chão de fábrica de forma simples</p>
         </header>
 
-        <nav class="tabs-nav" aria-label="Menu de Navegação">
-            <button class="tab-btn active" onclick="switchTab('cabos', this)">Cabos Industriais</button>
-            <button class="tab-btn" onclick="switchTab('topologias', this)">Topologias</button>
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('aba-cabos', this)">Cabos Industriais</button>
+            <button class="tab-btn" onclick="switchTab('aba-topologias', this)">Topologias</button>
         </nav>
 
         <main>
-            <section id="cabos" class="tab-content active">
+            <section id="aba-cabos" class="tab-content active">
                 <div class="cards-grid">
-                    <div class="card active" onclick="selectCabo('par-trancado', this)">
+                    <div class="cabo-card active" onclick="showCabo('par-trancado', this)">
                         <h3>Par Trançado</h3>
+                        <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Clique para saber mais</p>
                     </div>
-                    <div class="card" onclick="selectCabo('fibra', this)">
+                    <div class="cabo-card" onclick="showCabo('fibra-optica', this)">
                         <h3>Fibra Óptica</h3>
+                        <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Clique para saber mais</p>
                     </div>
-                    <div class="card" onclick="selectCabo('wireless', this)">
+                    <div class="cabo-card" onclick="showCabo('wireless', this)">
                         <h3>Wireless</h3>
+                        <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Clique para saber mais</p>
                     </div>
                 </div>
 
-                <div class="explanation-box">
-                    <h4 id="cabo-title">Par Trançado (Cabo de Rede com blindagem)</h4>
-                    <p id="cabo-text">É o cabo mais usado para ligar CLPs, IHMs e computadores de supervisão dentro dos painéis elétricos. Na fábrica, ele precisa ser blindado (STP) para evitar interferências causadas por motores elétricos de grande porte.</p>
+                <div id="text-par-trancado" class="cabo-text active">
+                    <h4>Par Trançado (Cabo Ethernet Blindado)</h4>
+                    <p><strong>Onde é usado:</strong> É o cabo mais comum no chão de fábrica. Ele conecta CLPs, painéis de operação (IHMs) e computadores de supervisão. Na indústria, ele usa uma blindagem especial metálica para não sofrer interferências das faíscas e dos grandes motores elétricos próximos.</p>
+                </div>
+
+                <div id="text-fibra-optica" class="cabo-text">
+                    <h4>Fibra Óptica</h4>
+                    <p><strong>Onde é usada:</strong> Ideal para ligar a sala de controle centralizada a galpões de produção muito distantes. Como ela transmite os dados através de feixes de luz, é totalmente imune a ruídos elétricos e soldas industriais, garantindo que os dados não se percam no caminho.</p>
+                </div>
+
+                <div id="text-wireless" class="cabo-text">
+                    <h4>Wireless (Redes Sem Fio)</h4>
+                    <p><strong>Onde é usado:</strong> Aplicado em equipamentos que se movimentam constantemente, como pontes rolantes, braços de robôs ou carrinhos autônomos de transporte (AGVs). Nesses locais, o uso de cabos físicos seria inviável porque eles quebrariam com o movimento contínuo.</p>
                 </div>
             </section>
 
-            <section id="topologias" class="tab-content">
+            <section id="aba-topologias" class="tab-content">
                 <div class="buttons-group">
-                    <button class="topo-btn active" onclick="selectTopo('estrela', this)">Layout em Estrela</button>
-                    <button class="topo-btn" onclick="selectTopo('barramento', this)">Layout em Barramento</button>
+                    <button class="topo-btn active" onclick="showTopo('estrela', this)">Layout em Estrela</button>
+                    <button class="topo-btn" onclick="showTopo('barramento', this)">Layout em Barramento</button>
                 </div>
 
-                <article id="topo-estrela" class="topo-details active">
+                <div id="info-estrela" class="topo-info active">
                     <h3>Layout em Estrela</h3>
-                    <p><strong>Uso no chão de fábrica:</strong> Todos os equipamentos (CLPs, IHMs, Sensores) são conectados individualmente a um dispositivo central, geralmente um Switch industrial.</p>
+                    <p><strong>Explicação simples:</strong> Cada máquina ou CLP tem seu próprio cabo exclusivo conectado a um aparelho centralizado (chamado Switch Industrial). É a estrutura mais moderna e comum hoje em dia.</p>
                     
-                    <div class="pros-cons-container">
+                    <div class="pros-cons-grid">
                         <div class="panel pros">
-                            <h4>✓ Vantagens</h4>
+                            <h4>✓ Vantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Se um cabo romper, apenas aquela máquina para de se comunicar.</li>
-                                <li>Muito fácil de identificar falhas e adicionar novos equipamentos.</li>
+                                <li>Se um cabo quebrar, apenas aquela máquina para. O resto da fábrica continua produzindo normalmente.</li>
+                                <li>Muito fácil achar defeitos, pois o Switch mostra exatamente qual cabo parou de funcionar.</li>
                             </ul>
                         </div>
                         <div class="panel cons">
-                            <h4>✗ Desvantagens</h4>
+                            <h4>✗ Desvantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Se o Switch central falhar, toda a rede do setor cai.</li>
-                                <li>Gasta muito mais cabos, pois todos devem ir até o ponto central.</li>
+                                <li>Se o Switch central quebrar ou queimar, o setor inteiro perde a comunicação de uma vez.</li>
+                                <li>Gasta muito mais metros de cabo, encarecendo a instalação inicial.</li>
                             </ul>
                         </div>
                     </div>
-                </article>
+                </div>
 
-                <article id="topo-barramento" class="topo-details">
+                <div id="info-barramento" class="topo-info">
                     <h3>Layout em Barramento</h3>
-                    <p><strong>Uso no chão de fábrica:</strong> Os dispositivos são conectados em fila ao longo de um único cabo principal (barramento), muito comum em redes clássicas como Profibus DP.</p>
+                    <p><strong>Explicação simples:</strong> Todos os equipamentos são conectados em fila ("varal") ao longo de um único cabo principal. Era muito comum em redes clássicas como Profibus e Modbus.</p>
                     
-                    <div class="pros-cons-container">
+                    <div class="pros-cons-grid">
                         <div class="panel pros">
-                            <h4>✓ Vantagens</h4>
+                            <h4>✓ Vantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Gasta muito menos cabo, reduzindo o custo de instalação inicial.</li>
-                                <li>Estrutura simples para máquinas sequenciais em linha de produção.</li>
+                                <li>Economia enorme de cabos, já que você só puxa uma linha reta conectando máquina por máquina.</li>
+                                <li>Excelente e simples para linhas de produção longas e sequenciais (como esteiras integradas).</li>
                             </ul>
                         </div>
                         <div class="panel cons">
-                            <h4>✗ Desvantagens</h4>
+                            <h4>✗ Desvantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Se o cabo principal se romper em qualquer ponto, toda a rede adiante cai.</li>
-                                <li>Mais difícil de localizar em qual ponto exato ocorreu uma falha física.</li>
+                                <li>Se o cabo principal se romper em qualquer ponto, todas as máquinas dali para frente ficam isoladas.</li>
+                                <li>Encontrar em qual ponto exato da fábrica aconteceu um mau contato no cabo é muito trabalhoso.</li>
                             </ul>
                         </div>
                     </div>
-                </article>
+                </div>
             </section>
         </main>
     </div>
 
     <script>
-        // Banco de dados simplificado para os Cabos
-        const dadosCabos = {
-            'par-trancado': {
-                titulo: 'Par Trançado (Cabo de Rede com blindagem)',
-                texto: 'É o cabo mais usado para ligar CLPs, IHMs e computadores de supervisão dentro dos painéis elétricos. Na fábrica, ele precisa ser blindado (STP) para evitar interferências causadas por motores elétricos de grande porte.'
-            },
-            'fibra': {
-                titulo: 'Fibra Óptica',
-                texto: 'Utilizada para interligar salas de controle que ficam muito distantes dos galpões de produção. Como transmite dados por luz, ela é imune a ruídos elétricos gerados por soldas e geradores, garantindo estabilidade total a longas distâncias.'
-            },
-            'wireless': {
-                titulo: 'Wireless (Redes Sem Fio Industriais)',
-                texto: 'Aplicada no chão de fábrica para monitorar sensores em locais de difícil acesso, veículos autônomos guiados (AGVs) ou pontes rolantes em movimento, onde cabos físicos quebrariam constantemente devido à movimentação mecânica.'
-            }
-        };
-
-        // Alternar abas principais
-        function switchTab(tabId, targetBtn) {
+        // Função para alternar entre as duas abas principais
+        function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            targetBtn.classList.add('active');
+            btn.classList.add('active');
         }
 
-        // Selecionar Cabo (Atualiza Card Ativo e Texto)
-        function selectCabo(caboId, targetCard) {
-            document.querySelectorAll('.card').forEach(el => el.classList.remove('active'));
-            targetCard.classList.add('active');
-
-            const infoBox = document.querySelector('.explanation-box');
-            document.getElementById('cabo-title').innerText = dadosCabos[caboId].titulo;
-            document.getElementById('cabo-text').innerText = dadosCabos[caboId].texto;
+        // Função para alternar as explicações dos cabos
+        function showCabo(caboId, card) {
+            document.querySelectorAll('.cabo-card').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.cabo-text').forEach(el => el.classList.remove('active'));
             
-            // Reinicia animação de fade-in no texto
-            infoBox.style.animation = 'none';
-            infoBox.offsetHeight; /* Trigger reflow */
-            infoBox.style.animation = 'fadeIn 0.3s ease forwards';
+            card.classList.add('active');
+            document.getElementById('text-' + caboId).classList.add('active');
         }
 
-        // Alternar botões de Topologia
-        function selectTopo(topoId, targetBtn) {
-            document.querySelectorAll('.topo-details').forEach(el => el.classList.remove('active'));
+        // Função para alternar as informações das topologias
+        function showTopo(topoId, btn) {
             document.querySelectorAll('.topo-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.topo-info').forEach(el => el.classList.remove('active'));
             
-            document.getElementById(`topo-${topoId}`).classList.add('active');
-            targetBtn.classList.add('active');
+            btn.classList.add('active');
+            document.getElementById('info-' + topoId).classList.add('active');
         }
     </script>
 </body>
