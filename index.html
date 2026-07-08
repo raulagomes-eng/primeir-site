@@ -196,18 +196,33 @@
             gap: 1.25rem;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cabo-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 50%, rgba(56, 189, 248, 0.02));
+            pointer-events: none;
         }
 
         .cabo-card:hover {
             border-color: var(--border-light);
             background: var(--bg-card-hover);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
 
         .cabo-card.active {
             border-color: var(--accent);
             background: var(--accent-glow);
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.08), inset 0 0 30px rgba(56, 189, 248, 0.03);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.1), inset 0 0 30px rgba(56, 189, 248, 0.03);
+            transform: translateY(-3px);
         }
 
         .cabo-card svg {
@@ -217,11 +232,19 @@
             stroke: var(--text-muted);
             stroke-width: 1.8;
             fill: none;
-            transition: stroke 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .cabo-card.active svg {
             stroke: var(--accent);
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.3));
+        }
+
+        .cabo-card-info {
+            position: relative;
+            z-index: 1;
         }
 
         .cabo-card-info h3 {
@@ -245,7 +268,7 @@
             border-radius: var(--radius);
             padding: 2rem;
             margin-bottom: 2.5rem;
-            animation: fadeUp 0.25s ease;
+            animation: fadeUp 0.3s ease;
             box-shadow: var(--shadow);
         }
 
@@ -274,7 +297,7 @@
             padding: 0.25rem 0.75rem;
             border-radius: 50px;
             font-size: 0.7rem;
-            font-family: monospace;
+            font-family: 'JetBrains Mono', monospace;
             border: 1px solid var(--border-color);
         }
 
@@ -379,7 +402,7 @@
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .badge-table {
@@ -420,13 +443,16 @@
             border-color: var(--border-light);
             color: var(--text-primary);
             background: var(--bg-card-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .topo-select-btn.active {
             background: var(--accent-glow);
             border-color: var(--accent);
             color: var(--accent);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.05);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.1);
+            transform: translateY(-2px);
         }
 
         .topo-display {
@@ -482,6 +508,12 @@
             border-radius: var(--radius);
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .report-pane:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         }
 
         .report-pane.pros { border-left: 4px solid var(--success); }
@@ -524,6 +556,29 @@
         .report-pane.cons li::before { color: var(--danger); }
         .report-pane.neutral li::before { color: var(--warning); }
 
+        /* ===== INTERACTIVE FEATURES ===== */
+        .counter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--bg-primary);
+            padding: 0.15rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            margin-left: 0.5rem;
+        }
+
+        .click-feedback {
+            transition: all 0.1s ease;
+        }
+
+        .click-feedback:active {
+            transform: scale(0.96);
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             margin-top: 3.5rem;
@@ -541,10 +596,18 @@
         .footer a {
             color: var(--accent);
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         .footer a:hover {
+            color: var(--text-primary);
             text-decoration: underline;
+        }
+
+        .footer .version {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -555,6 +618,7 @@
             .spec-window { padding: 1.2rem; }
             .topo-display { padding: 1.2rem; }
             .datasheet-box { grid-template-columns: 1fr; }
+            .tab-btn { min-width: 120px; padding: 0.6rem 0.8rem; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -570,6 +634,7 @@
         <div class="status-badge">
             <div class="status-dot"></div>
             sistema operacional
+            <span class="counter-badge" id="systemUptime">● 00:00:00</span>
         </div>
     </header>
 
@@ -585,7 +650,7 @@
 
             <div class="cards-grid">
                 <!-- Par Trançado -->
-                <div class="cabo-card active" onclick="showCabo('par-trancado', this)">
+                <div class="cabo-card active click-feedback" onclick="showCabo('par-trancado', this)" data-count="0">
                     <svg viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round"/><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
                     <div class="cabo-card-info">
                         <span>REF: ETH-STP</span>
@@ -593,7 +658,7 @@
                     </div>
                 </div>
                 <!-- Fibra Óptica -->
-                <div class="cabo-card" onclick="showCabo('fibra-optica', this)">
+                <div class="cabo-card click-feedback" onclick="showCabo('fibra-optica', this)" data-count="0">
                     <svg viewBox="0 0 24 24"><path d="M2 12h20M12 2v20" stroke-linecap="round"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
                     <div class="cabo-card-info">
                         <span>REF: FIB-OPT</span>
@@ -601,7 +666,7 @@
                     </div>
                 </div>
                 <!-- Wireless -->
-                <div class="cabo-card" onclick="showCabo('wireless', this)">
+                <div class="cabo-card click-feedback" onclick="showCabo('wireless', this)" data-count="0">
                     <svg viewBox="0 0 24 24"><path d="M12 20v-8m0 0a3 3 0 110-6 3 3 0 010 6zm-7.07-2.93a10 10 0 010-14.14m14.14 0a10 10 0 010 14.14" stroke-linecap="round"/></svg>
                     <div class="cabo-card-info">
                         <span>REF: WRL-IND</span>
@@ -620,6 +685,9 @@
                     <div class="spec-description">
                         <p><strong>O par trançado</strong> é o meio físico mais difundido em redes Ethernet industriais. A torção dos pares reduz o <em>crosstalk</em> (interferência cruzada), enquanto a blindagem metálica aterrada (STP/FTP) protege contra ruídos de inversores de frequência (VFDs) e motores de indução.</p>
                         <p style="margin-top: 0.75rem;">Em ambientes severos, conectores <strong>M12 com grau IP67</strong> garantem vedação contra poeira e umidade, sendo padrão em células de manufatura e linhas de montagem.</p>
+                        <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 0.85rem;">
+                            ⚡ <strong>Atualização T2:</strong> Suporte a PoE (Power over Ethernet) para alimentação de dispositivos de campo.
+                        </p>
                     </div>
                     <div class="datasheet-box">
                         <div class="data-field"><span class="label">Distância Máxima</span><span class="value">100 m</span></div>
@@ -640,6 +708,9 @@
                     <div class="spec-description">
                         <p><strong>Fibra óptica</strong> é a escolha primária para backbones e interligação de células distantes. Por utilizar pulsos de luz em núcleo de vidro, oferece <strong>isolamento galvânico absoluto</strong>, sendo imune a interferências eletromagnéticas (EMI), surtos de tensão e diferenças de potencial de terra entre prédios.</p>
                         <p style="margin-top: 0.75rem;">É indispensável em subestações elétricas, siderurgias e ambientes com alta carga de ruído.</p>
+                        <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 0.85rem;">
+                            🔹 <strong>Atualização T2:</strong> Novos transceptores SFP+ permitem taxas de até 25 Gbps.
+                        </p>
                     </div>
                     <div class="datasheet-box">
                         <div class="data-field"><span class="label">Distância Máxima</span><span class="value">&gt; 10 km</span></div>
@@ -660,11 +731,14 @@
                     <div class="spec-description">
                         <p><strong>Redes sem fio</strong> são a solução para ativos em movimento (AGVs, robôs móveis, empilhadeiras) onde cabos sofreriam desgaste mecânico precoce. Arquiteturas <strong>Mesh</strong> com autorregeneração (ex: WirelessHART) garantem que cada nó atue como roteador, aumentando a resiliência.</p>
                         <p style="margin-top: 0.75rem;">A latência e a suscetibilidade a barreiras físicas são os principais desafios de engenharia.</p>
+                        <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 0.85rem;">
+                            📶 <strong>Atualização T2:</strong> Suporte a Wi-Fi 6 (IEEE 802.11ax) e 5G industrial.
+                        </p>
                     </div>
                     <div class="datasheet-box">
                         <div class="data-field"><span class="label">Alcance</span><span class="value">Variável (dinâmico)</span></div>
                         <div class="data-field"><span class="label">Espectro</span><span class="value">2.4 / 5.8 GHz</span></div>
-                        <div class="data-field"><span class="label">Protocolos</span><span class="value">WirelessHART, AGVs</span></div>
+                        <div class="data-field"><span class="label">Protocolos</span><span class="value">WirelessHART, 5G</span></div>
                         <div class="data-field"><span class="label">Topologia</span><span class="value">Mesh / Estrela</span></div>
                     </div>
                 </div>
@@ -681,6 +755,7 @@
                             <th>Alcance</th>
                             <th>Imunidade a EMI</th>
                             <th>Custo Relativo</th>
+                            <th>PoE</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -690,13 +765,15 @@
                             <td>100 m</td>
                             <td><span class="badge-table yellow">Moderada</span></td>
                             <td><span class="badge-table green">Baixo</span></td>
+                            <td><span class="badge-table green">✓</span></td>
                         </tr>
                         <tr>
                             <td><strong style="color: var(--accent);">Fibra Óptica</strong></td>
-                            <td>1 Gbps – 10 Gbps+</td>
+                            <td>1 Gbps – 25 Gbps+</td>
                             <td>&gt; 10 km</td>
                             <td><span class="badge-table green">Absoluta</span></td>
                             <td><span class="badge-table red">Elevado</span></td>
+                            <td><span class="badge-table red">✗</span></td>
                         </tr>
                         <tr>
                             <td><strong style="color: var(--accent);">Wireless</strong></td>
@@ -704,6 +781,7 @@
                             <td>centenas de metros</td>
                             <td><span class="badge-table yellow">Suscetível</span></td>
                             <td><span class="badge-table blue">Médio</span></td>
+                            <td><span class="badge-table yellow">Limitado</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -714,10 +792,11 @@
         <section id="tab-topologias" class="tab-content">
 
             <div class="topo-group">
-                <button class="topo-select-btn active" onclick="showTopo('estrela', this)">✦ Estrela (Star)</button>
-                <button class="topo-select-btn" onclick="showTopo('barramento', this)">━ Barramento (Bus)</button>
-                <button class="topo-select-btn" onclick="showTopo('anel', this)">◉ Anel Redundante</button>
-                <button class="topo-select-btn" onclick="showTopo('malha', this)">⛶ Malha (Mesh)</button>
+                <button class="topo-select-btn active click-feedback" onclick="showTopo('estrela', this)">✦ Estrela (Star)</button>
+                <button class="topo-select-btn click-feedback" onclick="showTopo('barramento', this)">━ Barramento (Bus)</button>
+                <button class="topo-select-btn click-feedback" onclick="showTopo('anel', this)">◉ Anel Redundante</button>
+                <button class="topo-select-btn click-feedback" onclick="showTopo('malha', this)">⛶ Malha (Mesh)</button>
+                <button class="topo-select-btn click-feedback" onclick="showTopo('arvore', this)">🌳 Árvore (Tree)</button>
             </div>
 
             <!-- ESTRELA -->
@@ -732,6 +811,7 @@
                             <li>Isolamento de falhas: um cabo rompido afeta apenas aquele nó.</li>
                             <li>Gerenciamento simplificado de broadcast e prioridade (QoS).</li>
                             <li>Expansão modular: basta adicionar portas ao switch.</li>
+                            <li>Facilidade de diagnóstico e manutenção.</li>
                         </ul>
                     </div>
                     <div class="report-pane cons">
@@ -740,6 +820,7 @@
                             <li>Ponto único de falha: a pane do switch central paralisa a célula.</li>
                             <li>Maior volume de cabeamento e infraestrutura de canaletas.</li>
                             <li>Custo elevado em plantas com grande número de nós.</li>
+                            <li>Dependência de energia elétrica no switch central.</li>
                         </ul>
                     </div>
                 </div>
@@ -757,6 +838,7 @@
                             <li>Infraestrutura enxuta: mínimo de cabos por metro linear.</li>
                             <li>Expansão simples: basta conectar um novo nó ao barramento.</li>
                             <li>Custo de implementação muito baixo.</li>
+                            <li>Ideal para redes com poucos dispositivos.</li>
                         </ul>
                     </div>
                     <div class="report-pane cons">
@@ -765,6 +847,7 @@
                             <li>Quebra no barramento derruba toda a rede.</li>
                             <li>Diagnóstico de falhas é complexo (emendas oxidadas, terminação).</li>
                             <li>Degradação de sinal com aumento de nós e distância.</li>
+                            <li>Colisões de dados em redes com alta taxa de transmissão.</li>
                         </ul>
                     </div>
                 </div>
@@ -782,6 +865,7 @@
                             <li>Tolerância a falhas: suporta a quebra de um cabo sem parada.</li>
                             <li>Reconvergência ultrarrápida ( &lt; 50 ms).</li>
                             <li>Ideal para processos contínuos (petroquímica, siderurgia).</li>
+                            <li>Balanço de carga automático em condições normais.</li>
                         </ul>
                     </div>
                     <div class="report-pane cons">
@@ -790,6 +874,7 @@
                             <li>Exige switches gerenciáveis com suporte a protocolos de anel.</li>
                             <li>Configuração crítica: erros podem gerar tempestades de broadcast.</li>
                             <li>Custo mais elevado de hardware e engenharia.</li>
+                            <li>Complexidade na adição de novos nós.</li>
                         </ul>
                     </div>
                 </div>
@@ -807,6 +892,7 @@
                             <li>Redundância máxima: múltiplas rotas para qualquer destino.</li>
                             <li>Auto‑regeneração: a rede se reconfigura dinamicamente.</li>
                             <li>Escalabilidade horizontal simplificada.</li>
+                            <li>Alta confiabilidade em ambientes adversos.</li>
                         </ul>
                     </div>
                     <div class="report-pane cons">
@@ -815,6 +901,34 @@
                             <li>Alta complexidade de gerenciamento e roteamento.</li>
                             <li>Consumo de banda com tráfego de controle (overhead).</li>
                             <li>Custo elevado de infraestrutura e licenciamento.</li>
+                            <li>Latência variável dependendo do caminho escolhido.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÁRVORE -->
+            <div id="topo-arvore" class="topo-display">
+                <h3>Arquitetura Hierárquica em Árvore</h3>
+                <div class="badge-tech">HIERARQUIA · AGREGADORES</div>
+                <p class="topo-desc">Combinação de topologias em estrela e barramento, formando uma estrutura hierárquica. Switches de nível superior (core/agregação) conectam switches de nível inferior (acesso), ideal para grandes plantas industriais com múltiplas áreas.</p>
+                <div class="report-grid">
+                    <div class="report-pane pros">
+                        <h5>✓ Vantagens</h5>
+                        <ul>
+                            <li>Escalabilidade: permite crescimento organizado da rede.</li>
+                            <li>Segmentação de tráfego por níveis hierárquicos.</li>
+                            <li>Facilidade de manutenção e isolamento de falhas.</li>
+                            <li>Balanceamento de carga eficiente.</li>
+                        </ul>
+                    </div>
+                    <div class="report-pane cons">
+                        <h5>✗ Desafios</h5>
+                        <ul>
+                            <li>Ponto único de falha nos switches de nível superior.</li>
+                            <li>Maior complexidade de configuração.</li>
+                            <li>Custo elevado de hardware em múltiplos níveis.</li>
+                            <li>Latência adicional em comunicações entre níveis.</li>
                         </ul>
                     </div>
                 </div>
@@ -826,17 +940,37 @@
     <!-- FOOTER -->
     <footer class="footer">
         <span>Painel Técnico · Redes de Automação Industrial</span>
-        <span>v2.0 · <a href="#">Documentação completa</a></span>
+        <span class="version">v2.1 · <a href="#" onclick="showVersionInfo(event)">Documentação completa</a></span>
     </footer>
 </div>
 
 <script>
+    // ===== SISTEMA DE TEMPO DE ATIVIDADE =====
+    let startTime = Date.now();
+
+    function updateUptime() {
+        const elapsed = Date.now() - startTime;
+        const seconds = Math.floor(elapsed / 1000) % 60;
+        const minutes = Math.floor(elapsed / (1000 * 60)) % 60;
+        const hours = Math.floor(elapsed / (1000 * 60 * 60));
+        const uptimeEl = document.getElementById('systemUptime');
+        if (uptimeEl) {
+            uptimeEl.textContent = `● ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+    }
+
+    setInterval(updateUptime, 1000);
+
     // ===== TABS =====
     function switchTab(tabId, btn) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         btn.classList.add('active');
+        
+        // Feedback visual
+        btn.style.transform = 'scale(0.95)';
+        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 150);
     }
 
     // ===== CABOS =====
@@ -847,6 +981,14 @@
         card.classList.add('active');
         const target = document.getElementById('spec-' + caboId);
         if (target) target.classList.add('active');
+
+        // Contador de visualizações (interação)
+        let count = parseInt(card.dataset.count || 0) + 1;
+        card.dataset.count = count;
+        
+        // Feedback tátil
+        card.style.transform = 'scale(0.97)';
+        setTimeout(() => { card.style.transform = ''; }, 200);
     }
 
     // ===== TOPOLOGIAS =====
@@ -857,10 +999,30 @@
         btn.classList.add('active');
         const target = document.getElementById('topo-' + topoId);
         if (target) target.classList.add('active');
+
+        // Feedback visual
+        btn.style.transform = 'scale(0.95)';
+        setTimeout(() => { btn.style.transform = ''; }, 150);
     }
 
-    // ===== INICIALIZAÇÃO (garantia de consistência) =====
-    // Se algum spec estiver ativo, mantém; senão ativa o primeiro
+    // ===== VERSION INFO =====
+    function showVersionInfo(e) {
+        e.preventDefault();
+        alert(
+            '📋 Painel Técnico v2.1\n' +
+            '─────────────────────\n' +
+            '• Correções de bugs e melhorias de desempenho\n' +
+            '• Nova topologia: Árvore (Tree)\n' +
+            '• Atualizações de conteúdo técnico (T2)\n' +
+            '• Contador de visualizações nos cards\n' +
+            '• Sistema de tempo de atividade (uptime)\n' +
+            '• Feedback tátil aprimorado\n' +
+            '─────────────────────\n' +
+            'Desenvolvido para automação industrial.'
+        );
+    }
+
+    // ===== INICIALIZAÇÃO =====
     window.addEventListener('DOMContentLoaded', function() {
         // Garante que o primeiro cabo esteja ativo se nenhum estiver
         const activeSpec = document.querySelector('.spec-window.active');
@@ -874,6 +1036,20 @@
             const firstTopoBtn = document.querySelector('.topo-select-btn');
             if (firstTopoBtn) firstTopoBtn.click();
         }
+
+        // Inicia o contador de tempo
+        updateUptime();
+
+        // Adiciona suporte a teclas de atalho
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '1') {
+                const tab1 = document.querySelector('.tab-btn');
+                if (tab1) tab1.click();
+            } else if (e.key === '2') {
+                const tabs = document.querySelectorAll('.tab-btn');
+                if (tabs.length > 1) tabs[1].click();
+            }
+        });
     });
 </script>
 
