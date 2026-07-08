@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guia Visual de Redes para Automação</title>
     <style>
-        /* Cores e Variáveis Modernas */
         :root {
             --primary: #0f172a;
             --accent: #2563eb;
@@ -35,11 +34,10 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        /* Banner Principal */
         header {
             text-align: center;
             margin-bottom: 2rem;
@@ -60,7 +58,6 @@
             font-size: 1.1rem;
         }
 
-        /* Menu de Abas */
         .tabs-nav {
             display: flex;
             justify-content: center;
@@ -92,7 +89,6 @@
             color: white;
         }
 
-        /* Controle de Visibilidade das Abas */
         .tab-content {
             display: none;
         }
@@ -104,7 +100,7 @@
         /* --- ABA 1: CABOS --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -133,7 +129,6 @@
             color: var(--primary);
         }
 
-        /* Caixas de Explicação dos Cabos */
         .cabo-text {
             display: none;
             padding: 2rem;
@@ -141,6 +136,7 @@
             border-left: 6px solid var(--accent);
             border-radius: 8px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2.5rem;
             animation: fadeIn 0.3s ease;
         }
 
@@ -151,13 +147,59 @@
         .cabo-text h4 {
             color: var(--primary);
             font-size: 1.3rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .specs-list {
+            margin-top: 1rem;
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 6px;
+            list-style: none !important;
+        }
+
+        .specs-list li {
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        /* Tabela Comparativa */
+        .table-container {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .table-container h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* --- ABA 2: TOPOLOGIAS --- */
         .buttons-group {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 2rem;
         }
@@ -183,7 +225,6 @@
             color: white;
         }
 
-        /* Conteúdo das Topologias */
         .topo-info {
             display: none;
             background: var(--card-bg);
@@ -200,14 +241,25 @@
 
         .topo-info h3 {
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .protocol-badge {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
 
         .pros-cons-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
 
         .panel {
@@ -230,7 +282,6 @@
         ul { padding-left: 1.25rem; }
         li { margin-bottom: 0.5rem; }
 
-        /* Animação Simples */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
@@ -242,12 +293,12 @@
     <div class="container">
         <header>
             <h1>Guia Visual de Redes para Automação</h1>
-            <p>Infraestrutura de dados para o chão de fábrica de forma simples</p>
+            <p>Infraestrutura de dados e comunicação para o ambiente industrial</p>
         </header>
 
         <nav class="tabs-nav">
             <button class="tab-btn active" onclick="switchTab('aba-cabos', this)">Cabos Industriais</button>
-            <button class="tab-btn" onclick="switchTab('aba-topologias', this)">Topologias</button>
+            <button class="tab-btn" onclick="switchTab('aba-topologias', this)">Topologias de Rede</button>
         </nav>
 
         <main>
@@ -255,31 +306,84 @@
                 <div class="cards-grid">
                     <div class="cabo-card active" onclick="showCabo('par-trancado', this)">
                         <h3>Par Trançado</h3>
-                        <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Clique para saber mais</p>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Ethernet Industrial / Fieldbus</p>
                     </div>
                     <div class="cabo-card" onclick="showCabo('fibra-optica', this)">
                         <h3>Fibra Óptica</h3>
-                        <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Clique para saber mais</p>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Longas Distâncias e Imunidade</p>
                     </div>
                     <div class="cabo-card" onclick="showCabo('wireless', this)">
-                        <h3>Wireless</h3>
-                        <p style="font-size: 0.9rem; color: #64748b; margin-top: 5px;">Clique para saber mais</p>
+                        <h3>Wireless Industrial</h3>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Mobilidade e Campo Remoto</p>
                     </div>
                 </div>
 
                 <div id="text-par-trancado" class="cabo-text active">
-                    <h4>Par Trançado (Cabo Ethernet Blindado)</h4>
-                    <p><strong>Onde é usado:</strong> É o cabo mais comum no chão de fábrica. Ele conecta CLPs, painéis de operação (IHMs) e computadores de supervisão. Na indústria, ele usa uma blindagem especial metálica para não sofrer interferências das faíscas e dos grandes motores elétricos próximos.</p>
+                    <h4>Par Trançado (Ex: Cat5e / Cat6 STP)</h4>
+                    <p><strong>Uso na Fábrica:</strong> É a espinha dorsal para conectar Controladores Lógicos Programáveis (CLPs), Sistemas Supervisórios (SCADA) e painéis de operação (IHMs). Diferente do cabo de escritório, a versão industrial conta com malhas de cobre e folhas de alumínio (blindagem STP/FTP) e jaquetas de poliuretano resistentes a óleo, cortes e abrasão.</p>
+                    <ul class="specs-list">
+                        <li><strong>Distância Máxima:</strong> 100 metros (sem repetidores).</li>
+                        <li><strong>Conectores Comuns:</strong> RJ45 Industrial Metálico ou M12 circular (proteção IP67 contra água e poeira).</li>
+                        <li><strong>Principais Redes:</strong> Profinet, EtherNet/IP, Modbus TCP.</li>
+                    </ul>
                 </div>
 
                 <div id="text-fibra-optica" class="cabo-text">
-                    <h4>Fibra Óptica</h4>
-                    <p><strong>Onde é usada:</strong> Ideal para ligar a sala de controle centralizada a galpões de produção muito distantes. Como ela transmite os dados através de feixes de luz, é totalmente imune a ruídos elétricos e soldas industriais, garantindo que os dados não se percam no caminho.</p>
+                    <h4>Fibra Óptica (Monomodo e Multimodo)</h4>
+                    <p><strong>Uso na Fábrica:</strong> Utilizada para interligar subestações elétricas, anéis de switches principais e galpões de produção muito distantes uns dos outros. Como o sinal trafega em forma de luz por filamentos de vidro/plástico, ela oferece isolamento elétrico total, impedindo que surtos de tensão ou raios em um galpão queimem equipamentos de outra área.</p>
+                    <ul class="specs-list">
+                        <li><strong>Distância Máxima:</strong> Até 2 km (Multimodo) ou mais de 10 km (Monomodo).</li>
+                        <li><strong>Conectores Comuns:</strong> ST, SC, LC ou conectores ópticos pesados de engate rápido.</li>
+                        <li><strong>Principais Redes:</strong> Backbones de alta velocidade e redes com alta interferência eletromagnética (EMI).</li>
+                    </ul>
                 </div>
 
                 <div id="text-wireless" class="cabo-text">
-                    <h4>Wireless (Redes Sem Fio)</h4>
-                    <p><strong>Onde é usado:</strong> Aplicado em equipamentos que se movimentam constantemente, como pontes rolantes, braços de robôs ou carrinhos autônomos de transporte (AGVs). Nesses locais, o uso de cabos físicos seria inviável porque eles quebrariam com o movimento contínuo.</p>
+                    <h4>Wireless (Wi-Fi Industrial / WirelessHART)</h4>
+                    <p><strong>Uso na Fábrica:</strong> Fundamental para conectar sensores de processo espalhados por tanques distantes externos, braços robóticos articulados, pontes rolantes ou Veículos Autônomos Guiados (AGVs) que transportam cargas pela fábrica. Elimina a necessidade de cabos móveis (que quebram por fadiga mecânica) ou obras civis para rasgar o chão da fábrica.</p>
+                    <ul class="specs-list">
+                        <li><strong>Distância Máxima:</strong> Variável (de dezenas de metros em Wi-Fi até quilômetros em topologias mesh de campo).</li>
+                        <li><strong>Frequências Industriais:</strong> 2.4 GHz, 5 GHz ou sub-GHz (focadas em passar por estruturas metálicas).</li>
+                        <li><strong>Principais Redes:</strong> WirelessHART, ISA100.11a, Wi-Fi Industrial, 5G Privado.</li>
+                    </ul>
+                </div>
+
+                <div class="table-container">
+                    <h3>Resumo Técnico de Comparação</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo de Meio</th>
+                                <th>Velocidade Típica</th>
+                                <th>Distância Máx.</th>
+                                <th>Imunidade a Ruídos</th>
+                                <th>Custo de Instalação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Par Trançado</strong></td>
+                                <td>100 Mbps a 1 Gbps</td>
+                                <td>100 m</td>
+                                <td>Média (Requer blindagem)</td>
+                                <td>Econômico</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fibra Óptica</strong></td>
+                                <td>1 Gbps a 10 Gbps+</td>
+                                <td>Vários Quilômetros</td>
+                                <td>Alta (Totalmente Imune)</td>
+                                <td>Alto</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Wireless</strong></td>
+                                <td>250 Kbps (Sensoriamento) a 300 Mbps+</td>
+                                <td>Centenas de metros</td>
+                                <td>Baixa (Sujeito a barreiras)</td>
+                                <td>Médio (Sem fiação)</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
@@ -287,47 +391,73 @@
                 <div class="buttons-group">
                     <button class="topo-btn active" onclick="showTopo('estrela', this)">Layout em Estrela</button>
                     <button class="topo-btn" onclick="showTopo('barramento', this)">Layout em Barramento</button>
+                    <button class="topo-btn" onclick="showTopo('anel', this)">Layout em Anel (Redundante)</button>
                 </div>
 
                 <div id="info-estrela" class="topo-info active">
-                    <h3>Layout em Estrela</h3>
-                    <p><strong>Explicação simples:</strong> Cada máquina ou CLP tem seu próprio cabo exclusivo conectado a um aparelho centralizado (chamado Switch Industrial). É a estrutura mais moderna e comum hoje em dia.</p>
+                    <h3>Layout em Estrela (Star Topology)</h3>
+                    <span class="protocol-badge">Padrão da Indústria Moderna</span>
+                    <p><strong>Como funciona:</strong> Todas as máquinas, inversores de frequência e IHMs enviam seus cabos individuais diretamente para um Switch Ethernet Industrial posicionado no centro do painel ou da célula de trabalho.</p>
                     
                     <div class="pros-cons-grid">
                         <div class="panel pros">
                             <h4>✓ Vantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Se um cabo quebrar, apenas aquela máquina para. O resto da fábrica continua produzindo normalmente.</li>
-                                <li>Muito fácil achar defeitos, pois o Switch mostra exatamente qual cabo parou de funcionar.</li>
+                                <li><strong>Isolamento de Falhas:</strong> Se o cabo de um motor ou robô romper, apenas ele para de comunicar. O resto da linha continua operando sem interrupções.</li>
+                                <li><strong>Manutenção Rápida:</strong> Os LEDs do Switch apontam instantaneamente qual máquina está com problema de conexão física.</li>
                             </ul>
                         </div>
                         <div class="panel cons">
                             <h4>✗ Desvantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Se o Switch central quebrar ou queimar, o setor inteiro perde a comunicação de uma vez.</li>
-                                <li>Gasta muito mais metros de cabo, encarecendo a instalação inicial.</li>
+                                <li><strong>Dependência Central:</strong> Se o Switch Central queimar ou falhar na alimentação elétrica, toda a rede daquela linha de montagem cai imediatamente.</li>
+                                <li><strong>Volume de Fiação:</strong> Exige um emaranhado maior de cabos passando por canaletas, pois cada ponto precisa do seu próprio fio até o centro.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
                 <div id="info-barramento" class="topo-info">
-                    <h3>Layout em Barramento</h3>
-                    <p><strong>Explicação simples:</strong> Todos os equipamentos são conectados em fila ("varal") ao longo de um único cabo principal. Era muito comum em redes clássicas como Profibus e Modbus.</p>
+                    <h3>Layout em Barramento (Bus Topology)</h3>
+                    <span class="protocol-badge">Comum em Redes Legacy (Clássicas)</span>
+                    <p><strong>Como funciona:</strong> Os dispositivos são conectados em cascata (um após o outro, em formato de "varal de roupas") compartilhando o mesmo cabo principal. Exige resistores de terminação nas duas pontas finais da linha.</p>
                     
                     <div class="pros-cons-grid">
                         <div class="panel pros">
                             <h4>✓ Vantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Economia enorme de cabos, já que você só puxa uma linha reta conectando máquina por máquina.</li>
-                                <li>Excelente e simples para linhas de produção longas e sequenciais (como esteiras integradas).</li>
+                                <li><strong>Extrema Economia:</strong> Reduz drasticamente o gasto com fiação e infraestrutura de calhas, cruzando a fábrica inteira com apenas uma linha de cabo de ponta a ponta.</li>
+                                <li><strong>Montagem Linear:</strong> Perfeito para esteiras de transporte longas, onde os sensores e atuadores estão distribuídos sequencialmente em linha reta.</li>
                             </ul>
                         </div>
                         <div class="panel cons">
                             <h4>✗ Desvantagens no Chão de Fábrica</h4>
                             <ul>
-                                <li>Se o cabo principal se romper em qualquer ponto, todas as máquinas dali para frente ficam isoladas.</li>
-                                <li>Encontrar em qual ponto exato da fábrica aconteceu um mau contato no cabo é muito trabalhoso.</li>
+                                <li><strong>Efeito Cascata:</strong> Se o cabo central romper em qualquer ponto, todos os dispositivos localizados após o corte perdem a comunicação.</li>
+                                <li><strong>Diagnóstico Difícil:</strong> Um mau contato ou curto em um conector pode derrubar o barramento inteiro, forçando o técnico a testar máquina por máquina.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="info-anel" class="topo-info">
+                    <h3>Layout em Anel (Ring Topology)</h3>
+                    <span class="protocol-badge">Alta Disponibilidade e Segurança Crítica</span>
+                    <p><strong>Como funciona:</strong> Os Switches ou dispositivos fecham um circuito fechado (um círculo). Os dados trafegam por um caminho principal, mas se houver um rompimento de cabo, os Switches gerenciam a rede automaticamente para enviar as informações pelo caminho inverso.</p>
+                    
+                    <div class="pros-cons-grid">
+                        <div class="panel pros">
+                            <h4>✓ Vantagens no Chão de Fábrica</h4>
+                            <ul>
+                                <li><strong>Tolerância a Falhas (Redundância):</strong> A rede pode sofrer a quebra completa de um cabo e nenhuma máquina para de funcionar. O tempo de recuperação (recuperação do anel) ocorre em milissegundos.</li>
+                                <li><strong>Segurança Operacional:</strong> Ideal para processos químicos, siderúrgicos ou linhas que geram grandes prejuízos financeiros caso fiquem paradas por minutos.</li>
+                            </ul>
+                        </div>
+                        <div class="panel cons">
+                            <h4>✗ Desvantagens no Chão de Fábrica</h4>
+                            <ul>
+                                <li><strong>Hardware Especializado:</strong> Requer switches industriais gerenciáveis mais caros, compatíveis com protocolos de anel específicos.</li>
+                                <li><strong>Complexidade de Configuração:</strong> Exige parametrização de software de rede para evitar "loops" (tempestades de dados que travam a rede se o anel não for gerenciado corretamente).</li>
                             </ul>
                         </div>
                     </div>
@@ -337,7 +467,6 @@
     </div>
 
     <script>
-        // Função para alternar entre as duas abas principais
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -346,7 +475,6 @@
             btn.classList.add('active');
         }
 
-        // Função para alternar as explicações dos cabos
         function showCabo(caboId, card) {
             document.querySelectorAll('.cabo-card').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.cabo-text').forEach(el => el.classList.remove('active'));
@@ -355,7 +483,6 @@
             document.getElementById('text-' + caboId).classList.add('active');
         }
 
-        // Função para alternar as informações das topologias
         function showTopo(topoId, btn) {
             document.querySelectorAll('.topo-btn').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.topo-info').forEach(el => el.classList.remove('active'));
