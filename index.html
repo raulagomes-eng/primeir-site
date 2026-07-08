@@ -3,90 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia Visual de Redes para Automação</title>
+    <title>Painel Técnico: Redes de Automação</title>
     <style>
+        /* Paleta de Cores Industrial/Dashboard */
         :root {
-            --primary: #0f172a;
-            --accent: #2563eb;
-            --accent-light: #eff6ff;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #334155;
-            --success: #16a34a;
-            --success-bg: #f0fdf4;
-            --danger: #dc2626;
-            --danger-bg: #fef2f2;
-            --border: #e2e8f0;
+            --bg: #090d16;
+            --panel-bg: #111827;
+            --panel-hover: #1f2937;
+            --border: #374151;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            --accent: #0ea5e9;
+            --accent-glow: rgba(14, 165, 233, 0.15);
+            
+            --success: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             padding: 2rem 1rem;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1140px;
             margin: 0 auto;
         }
 
+        /* Topo estilo Console de Operação */
         header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 2.5rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary), #1e293b);
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 4px; height: 100%;
+            background-color: var(--accent);
+            border-radius: 8px 0 0 8px;
         }
 
         header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
         }
 
         header p {
-            color: #94a3b8;
-            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 0.4rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* Seletor de Módulos (Abas) */
         .tabs-nav {
             display: flex;
-            justify-content: center;
             gap: 0.5rem;
             margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 0.5rem;
+            background-color: #030712;
+            padding: 0.4rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
         }
 
         .tab-btn {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             border: none;
             background: none;
-            color: #64748b;
-            border-radius: 6px;
+            color: var(--text-muted);
+            border-radius: 4px;
             transition: all 0.2s ease;
         }
 
         .tab-btn:hover {
-            background-color: var(--border);
-            color: var(--primary);
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
         }
 
         .tab-btn.active {
             background-color: var(--accent);
-            color: white;
+            color: #000;
+            font-weight: 700;
         }
 
         .tab-content {
@@ -97,193 +141,283 @@
             display: block;
         }
 
-        /* --- ABA 1: CABOS --- */
+        /* --- GRID DE CARDS (MÉTODO DA DATA SHEET) --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .cabo-card {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 10px;
-            border: 2px solid var(--border);
-            text-align: center;
+            background: var(--panel-bg);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
             cursor: pointer;
-            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .cabo-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
+            border-color: var(--text-muted);
+            background-color: var(--panel-hover);
         }
 
         .cabo-card.active {
             border-color: var(--accent);
-            background-color: var(--accent-light);
+            background-color: var(--accent-glow);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.1);
         }
 
-        .cabo-card h3 {
-            color: var(--primary);
+        .cabo-card svg {
+            width: 36px;
+            height: 36px;
+            fill: none;
+            stroke: var(--text-muted);
+            stroke-width: 1.5;
+            flex-shrink: 0;
         }
 
-        .cabo-text {
+        .cabo-card.active svg {
+            stroke: var(--accent);
+        }
+
+        .cabo-card-info h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .cabo-card-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        /* Janela de Especificação Técnica */
+        .spec-window {
             display: none;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             padding: 2rem;
-            background-color: var(--card-bg);
-            border-left: 6px solid var(--accent);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 2.5rem;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.2s ease;
         }
 
-        .cabo-text.active {
+        .spec-window.active {
             display: block;
         }
 
-        .cabo-text h4 {
-            color: var(--primary);
-            font-size: 1.3rem;
-            margin-bottom: 0.75rem;
+        .spec-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .specs-list {
-            margin-top: 1rem;
-            background: #f1f5f9;
+        .spec-header h4 {
+            font-size: 1.4rem;
+            color: var(--accent);
+        }
+
+        .spec-grid-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .spec-grid-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Box de Informações Técnicas Estilo Grid */
+        .datasheet-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            background: #0b0f19;
             padding: 1rem;
             border-radius: 6px;
-            list-style: none !important;
-        }
-
-        .specs-list li {
-            margin-bottom: 0.25rem;
-            font-size: 0.95rem;
-        }
-
-        /* Tabela Comparativa */
-        .table-container {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 10px;
             border: 1px solid var(--border);
+        }
+
+        .data-field {
+            display: flex;
+            flex-direction: column;
+            border-left: 2px solid var(--border);
+            padding-left: 0.75rem;
+        }
+
+        .data-field .label {
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .data-field .value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 0.15rem;
+        }
+
+        /* Tabela Matriz de Performance */
+        .matrix-container {
+            background: var(--panel-bg);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
             overflow-x: auto;
         }
 
-        .table-container h3 {
+        .matrix-container h3 {
+            font-size: 1.1rem;
             margin-bottom: 1rem;
-            color: var(--primary);
+            color: var(--text-main);
+            font-weight: 600;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.9rem;
             text-align: left;
-            font-size: 0.95rem;
         }
 
         th, td {
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1rem;
             border-bottom: 1px solid var(--border);
         }
 
         th {
-            background-color: #f1f5f9;
-            color: var(--primary);
-            font-weight: 600;
+            background-color: #0b0f19;
+            color: var(--text-muted);
+            font-family: monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
         }
 
-        /* --- ABA 2: TOPOLOGIAS --- */
-        .buttons-group {
+        tr:hover td {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        /* --- ABA TOPOLOGIAS --- */
+        .topo-group {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.75rem;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
 
-        .topo-btn {
-            padding: 0.75rem 1.25rem;
+        .topo-select-btn {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            background-color: var(--card-bg);
-            border: 2px solid var(--border);
-            color: var(--text);
-            border-radius: 6px;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .topo-btn:hover {
-            border-color: var(--primary);
+        .topo-select-btn:hover {
+            border-color: var(--text-muted);
+            color: var(--text-main);
         }
 
-        .topo-btn.active {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
+        .topo-select-btn.active {
+            background-color: rgba(14, 165, 233, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
-        .topo-info {
+        .topo-display {
             display: none;
-            background: var(--card-bg);
+            background: var(--panel-bg);
             padding: 2rem;
-            border-radius: 10px;
+            border-radius: 6px;
             border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.2s ease;
         }
 
-        .topo-info.active {
+        .topo-display.active {
             display: block;
         }
 
-        .topo-info h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .protocol-badge {
+        .badge-tech {
             display: inline-block;
-            background-color: #e2e8f0;
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+            background-color: #1e293b;
+            color: var(--accent);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            padding: 0.2rem 0.6rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
         }
 
-        .pros-cons-grid {
+        .report-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
-        .panel {
-            padding: 1.5rem;
-            border-radius: 8px;
+        .report-pane {
+            padding: 1.25rem;
+            border-radius: 6px;
+            background-color: #0b0f19;
             border: 1px solid var(--border);
         }
 
-        .panel.pros { background-color: var(--success-bg); border-color: #bbf7d0; }
-        .panel.cons { background-color: var(--danger-bg); border-color: #fecaca; }
+        .report-pane.pros { border-left: 4px solid var(--success); }
+        .report-pane.cons { border-left: 4px solid var(--danger); }
 
-        .panel h4 {
-            font-size: 1.1rem;
+        .report-pane h5 {
+            font-size: 1rem;
             margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .panel.pros h4 { color: var(--success); }
-        .panel.cons h4 { color: var(--danger); }
+        .report-pane.pros h5 { color: var(--success); }
+        .report-pane.cons h5 { color: var(--danger); }
 
-        ul { padding-left: 1.25rem; }
-        li { margin-bottom: 0.5rem; }
+        .report-pane ul {
+            list-style: none;
+            padding-left: 0.25rem;
+        }
+
+        .report-pane li {
+            margin-bottom: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            position: relative;
+            padding-left: 1.25rem;
+        }
+
+        .report-pane li::before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: var(--border);
+        }
+        .report-pane.pros li::before { color: var(--success); }
+        .report-pane.cons li::before { color: var(--danger); }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -292,95 +426,128 @@
 
     <div class="container">
         <header>
-            <h1>Guia Visual de Redes para Automação</h1>
-            <p>Infraestrutura de dados e comunicação para o ambiente industrial</p>
+            <div>
+                <h1>Redes de Automação & Infraestrutura</h1>
+                <p>Módulo de Análise de Viabilidade Técnica Corporativa</p>
+            </div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                SISTEMA OPERACIONAL
+            </div>
         </header>
 
         <nav class="tabs-nav">
-            <button class="tab-btn active" onclick="switchTab('aba-cabos', this)">Cabos Industriais</button>
-            <button class="tab-btn" onclick="switchTab('aba-topologias', this)">Topologias de Rede</button>
+            <button class="tab-btn active" onclick="switchTab('aba-cabos', this)">[01] MEIOS FÍSICOS (CABOS)</button>
+            <button class="tab-btn" onclick="switchTab('aba-topologias', this)">[02] ARQUITETURA (TOPOLOGIAS)</button>
         </nav>
 
         <main>
             <section id="aba-cabos" class="tab-content active">
                 <div class="cards-grid">
                     <div class="cabo-card active" onclick="showCabo('par-trancado', this)">
-                        <h3>Par Trançado</h3>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Ethernet Industrial / Fieldbus</p>
+                        <svg viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round"/><circle cx="6" cy="6" r="2" fill="currentColor"/><circle cx="18" cy="6" r="2" fill="currentColor"/><circle cx="6" cy="18" r="2" fill="currentColor"/><circle cx="18" cy="18" r="2" fill="currentColor"/></svg>
+                        <div class="cabo-card-info">
+                            <span>REF: ETH-STP</span>
+                            <h3>Par Trançado</h3>
+                        </div>
                     </div>
                     <div class="cabo-card" onclick="showCabo('fibra-optica', this)">
-                        <h3>Fibra Óptica</h3>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Longas Distâncias e Imunidade</p>
+                        <svg viewBox="0 0 24 24"><path d="M2 12h20M12 2v20" stroke-linecap="round"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+                        <div class="cabo-card-info">
+                            <span>REF: FIB-OPT</span>
+                            <h3>Fibra Óptica</h3>
+                        </div>
                     </div>
                     <div class="cabo-card" onclick="showCabo('wireless', this)">
-                        <h3>Wireless Industrial</h3>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 5px;">Mobilidade e Campo Remoto</p>
+                        <svg viewBox="0 0 24 24"><path d="M12 20v-8m0 0a3 3 0 110-6 3 3 0 010 6zm-7.07-2.93a10 10 0 010-14.14m14.14 0a10 10 0 010 14.14" stroke-linecap="round"/></svg>
+                        <div class="cabo-card-info">
+                            <span>REF: WRL-IND</span>
+                            <h3>Wireless Industrial</h3>
+                        </div>
                     </div>
                 </div>
 
-                <div id="text-par-trancado" class="cabo-text active">
-                    <h4>Par Trançado (Ex: Cat5e / Cat6 STP)</h4>
-                    <p><strong>Uso na Fábrica:</strong> É a espinha dorsal para conectar Controladores Lógicos Programáveis (CLPs), Sistemas Supervisórios (SCADA) e painéis de operação (IHMs). Diferente do cabo de escritório, a versão industrial conta com malhas de cobre e folhas de alumínio (blindagem STP/FTP) e jaquetas de poliuretano resistentes a óleo, cortes e abrasão.</p>
-                    <ul class="specs-list">
-                        <li><strong>Distância Máxima:</strong> 100 metros (sem repetidores).</li>
-                        <li><strong>Conectores Comuns:</strong> RJ45 Industrial Metálico ou M12 circular (proteção IP67 contra água e poeira).</li>
-                        <li><strong>Principais Redes:</strong> Profinet, EtherNet/IP, Modbus TCP.</li>
-                    </ul>
+                <div id="text-par-trancado" class="spec-window active">
+                    <div class="spec-header">
+                        <h4>Par Trançado Blindado (STP / FTP)</h4>
+                    </div>
+                    <div class="spec-grid-layout">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">O par trançado é o meio físico mais comum em redes baseadas em Ethernet Industrial. Sua fiação interna reduz interferências cruzadas (Crosstalk). Em plantas industriais, o uso de blindagem metálica aterrada é obrigatório para mitigar o ruído gerado por inversores de frequência (VFDs) e bobinas elétricas de motores de indução.</p>
+                        </div>
+                        <div class="datasheet-box">
+                            <div class="data-field"><span class="label">Distância Máx</span><span class="value">100 Metros</span></div>
+                            <div class="data-field"><span class="label">Conectores</span><span class="value">RJ45 / M12 IP67</span></div>
+                            <div class="data-field"><span class="label">Protocolos</span><span class="value">Profinet, EtherNet/IP</span></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="text-fibra-optica" class="cabo-text">
-                    <h4>Fibra Óptica (Monomodo e Multimodo)</h4>
-                    <p><strong>Uso na Fábrica:</strong> Utilizada para interligar subestações elétricas, anéis de switches principais e galpões de produção muito distantes uns dos outros. Como o sinal trafega em forma de luz por filamentos de vidro/plástico, ela oferece isolamento elétrico total, impedindo que surtos de tensão ou raios em um galpão queimem equipamentos de outra área.</p>
-                    <ul class="specs-list">
-                        <li><strong>Distância Máxima:</strong> Até 2 km (Multimodo) ou mais de 10 km (Monomodo).</li>
-                        <li><strong>Conectores Comuns:</strong> ST, SC, LC ou conectores ópticos pesados de engate rápido.</li>
-                        <li><strong>Principais Redes:</strong> Backbones de alta velocidade e redes com alta interferência eletromagnética (EMI).</li>
-                    </ul>
+                <div id="text-fibra-optica" class="spec-window">
+                    <div class="spec-header">
+                        <h4>Fibra Óptica Industrial (MM / SM)</h4>
+                    </div>
+                    <div class="spec-grid-layout">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">Indicada para interligação de células distantes de manufatura ou infraestruturas críticas (Backbones). Como o sinal trafega puramente na forma de luz guiada por reflexão interna no vidro, oferece isolamento galvânico perfeito, tornando-a nativamente imune a EMI, picos de alta tensão, raios e variações de potencial de terra entre galpões.</p>
+                        </div>
+                        <div class="datasheet-box">
+                            <div class="data-field"><span class="label">Distância Máx</span><span class="value">Até 10+ Km</span></div>
+                            <div class="data-field"><span class="label">Conectores</span><span class="value">ST, SC, LC</span></div>
+                            <div class="data-field"><span class="label">Protocolos</span><span class="value">Backbones, Redes EMI</span></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="text-wireless" class="cabo-text">
-                    <h4>Wireless (Wi-Fi Industrial / WirelessHART)</h4>
-                    <p><strong>Uso na Fábrica:</strong> Fundamental para conectar sensores de processo espalhados por tanques distantes externos, braços robóticos articulados, pontes rolantes ou Veículos Autônomos Guiados (AGVs) que transportam cargas pela fábrica. Elimina a necessidade de cabos móveis (que quebram por fadiga mecânica) ou obras civis para rasgar o chão da fábrica.</p>
-                    <ul class="specs-list">
-                        <li><strong>Distância Máxima:</strong> Variável (de dezenas de metros em Wi-Fi até quilômetros em topologias mesh de campo).</li>
-                        <li><strong>Frequências Industriais:</strong> 2.4 GHz, 5 GHz ou sub-GHz (focadas em passar por estruturas metálicas).</li>
-                        <li><strong>Principais Redes:</strong> WirelessHART, ISA100.11a, Wi-Fi Industrial, 5G Privado.</li>
-                    </ul>
+                <div id="text-wireless" class="spec-window">
+                    <div class="spec-header">
+                        <h4>Sistemas Sem Fio Industriais (Mesh / Wi-Fi)</h4>
+                    </div>
+                    <div class="spec-grid-layout">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 1rem;">Projetada para ativos em movimentação constante dinâmica onde o desgaste físico mecânico destruiria cabos estáticos em poucos meses de ciclo operacional. Redes Mesh como o WirelessHART operam em arquiteturas de autorregeneração, onde cada sensor de campo serve como roteador de dados redundante.</p>
+                        </div>
+                        <div class="datasheet-box">
+                            <div class="data-field"><span class="label">Distância Máx</span><span class="value">Variável (Dinâmico)</span></div>
+                            <div class="data-field"><span class="label">Espectro</span><span class="value">2.4GHz / 5.8GHz</span></div>
+                            <div class="data-field"><span class="label">Protocolos</span><span class="value">WirelessHART, AGVs</span></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="table-container">
-                    <h3>Resumo Técnico de Comparação</h3>
+                <div class="matrix-container">
+                    <h3>Matriz Descritiva Comparativa</h3>
                     <table>
                         <thead>
                             <tr>
-                                <th>Tipo de Meio</th>
-                                <th>Velocidade Típica</th>
-                                <th>Distância Máx.</th>
-                                <th>Imunidade a Ruídos</th>
-                                <th>Custo de Instalação</th>
+                                <th>Meio Físico</th>
+                                <th>Banda Larga</th>
+                                <th>Alcance</th>
+                                <th>Isolamento EMI</th>
+                                <th>Impacto de Custo</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Par Trançado</strong></td>
-                                <td>100 Mbps a 1 Gbps</td>
+                                <td><strong style="color: var(--accent);">Par Trançado</strong></td>
+                                <td>100 Mbps - 1 Gbps</td>
                                 <td>100 m</td>
-                                <td>Média (Requer blindagem)</td>
-                                <td>Econômico</td>
+                                <td>Moderado (Blindado)</td>
+                                <td>Baixo/Econômico</td>
                             </tr>
                             <tr>
-                                <td><strong>Fibra Óptica</strong></td>
-                                <td>1 Gbps a 10 Gbps+</td>
-                                <td>Vários Quilômetros</td>
-                                <td>Alta (Totalmente Imune)</td>
-                                <td>Alto</td>
+                                <td><strong style="color: var(--accent);">Fibra Óptica</strong></td>
+                                <td>1 Gbps - 10 Gbps+</td>
+                                <td>Até 10 Km+</td>
+                                <td>Absoluto (Total)</td>
+                                <td>Elevado</td>
                             </tr>
                             <tr>
-                                <td><strong>Wireless</strong></td>
-                                <td>250 Kbps (Sensoriamento) a 300 Mbps+</td>
+                                <td><strong style="color: var(--accent);">Wireless</strong></td>
+                                <td>250 Kbps - 300 Mbps</td>
                                 <td>Centenas de metros</td>
-                                <td>Baixa (Sujeito a barreiras)</td>
-                                <td>Médio (Sem fiação)</td>
+                                <td>Suscetível a barreiras</td>
+                                <td>Médio (Sem Infra)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -388,76 +555,76 @@
             </section>
 
             <section id="aba-topologias" class="tab-content">
-                <div class="buttons-group">
-                    <button class="topo-btn active" onclick="showTopo('estrela', this)">Layout em Estrela</button>
-                    <button class="topo-btn" onclick="showTopo('barramento', this)">Layout em Barramento</button>
-                    <button class="topo-btn" onclick="showTopo('anel', this)">Layout em Anel (Redundante)</button>
+                <div class="topo-group">
+                    <button class="topo-select-btn active" onclick="showTopo('estrela', this)">Estrela (Star)</button>
+                    <button class="topo-select-btn" onclick="showTopo('barramento', this)">Barramento (Bus)</button>
+                    <button class="topo-select-btn" onclick="showTopo('anel', this)">Anel Redundante (Ring)</button>
                 </div>
 
-                <div id="info-estrela" class="topo-info active">
-                    <h3>Layout em Estrela (Star Topology)</h3>
-                    <span class="protocol-badge">Padrão da Indústria Moderna</span>
-                    <p><strong>Como funciona:</strong> Todas as máquinas, inversores de frequência e IHMs enviam seus cabos individuais diretamente para um Switch Ethernet Industrial posicionado no centro do painel ou da célula de trabalho.</p>
+                <div id="info-estrela" class="topo-display active">
+                    <h3>Arquitetura Point-to-Point em Estrela</h3>
+                    <div class="badge-tech">DESIGN: SWITCH-CENTRIC // ETHERNET</div>
+                    <p style="color: var(--text-muted);">Padrão absoluto em automação baseada em Ethernet ativa. Cada nó final (IHM, CLP, Remota de I/O) mantém uma conexão de link exclusiva com um Switch Industrial chaveado centralizador.</p>
                     
-                    <div class="pros-cons-grid">
-                        <div class="panel pros">
-                            <h4>✓ Vantagens no Chão de Fábrica</h4>
+                    <div class="report-grid">
+                        <div class="report-pane pros">
+                            <h5>✓ Vantagens Operacionais</h5>
                             <ul>
-                                <li><strong>Isolamento de Falhas:</strong> Se o cabo de um motor ou robô romper, apenas ele para de comunicar. O resto da linha continua operando sem interrupções.</li>
-                                <li><strong>Manutenção Rápida:</strong> Os LEDs do Switch apontam instantaneamente qual máquina está com problema de conexão física.</li>
+                                <li>Contenção de Falhas: Danos em um cabo interrompem exclusivamente a sua respectiva máquina.</li>
+                                <li>Isolamento de Broadcast: Gerenciamento eficiente e direto de tráfego de dados.</li>
                             </ul>
                         </div>
-                        <div class="panel cons">
-                            <h4>✗ Desvantagens no Chão de Fábrica</h4>
+                        <div class="report-pane cons">
+                            <h5>✗ Vulnerabilidades de Engenharia</h5>
                             <ul>
-                                <li><strong>Dependência Central:</strong> Se o Switch Central queimar ou falhar na alimentação elétrica, toda a rede daquela linha de montagem cai imediatamente.</li>
-                                <li><strong>Volume de Fiação:</strong> Exige um emaranhado maior de cabos passando por canaletas, pois cada ponto precisa do seu próprio fio até o centro.</li>
+                                <li>Ponto Único de Falha: A pane total do Switch central encerra o tráfego da célula inteira.</li>
+                                <li>Custo de Passagem: Exige o maior volume de infraestrutura em canaletas e eletrocalhas.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <div id="info-barramento" class="topo-info">
-                    <h3>Layout em Barramento (Bus Topology)</h3>
-                    <span class="protocol-badge">Comum em Redes Legacy (Clássicas)</span>
-                    <p><strong>Como funciona:</strong> Os dispositivos são conectados em cascata (um após o outro, em formato de "varal de roupas") compartilhando o mesmo cabo principal. Exige resistores de terminação nas duas pontas finais da linha.</p>
+                <div id="info-barramento" class="topo-display">
+                    <h3>Arquitetura Linear em Barramento</h3>
+                    <div class="badge-tech">DESIGN: MULTIDROP // FIELDBUS LOGIC</div>
+                    <p style="color: var(--text-muted);">Todos os nós compartilham fisicamente o mesmo tronco condutor por meio de derivações repetidas. Amplamente difundida em redes Fieldbus seriais.</p>
                     
-                    <div class="pros-cons-grid">
-                        <div class="panel pros">
-                            <h4>✓ Vantagens no Chão de Fábrica</h4>
+                    <div class="report-grid">
+                        <div class="report-pane pros">
+                            <h5>✓ Vantagens Operacionais</h5>
                             <ul>
-                                <li><strong>Extrema Economia:</strong> Reduz drasticamente o gasto com fiação e infraestrutura de calhas, cruzando a fábrica inteira com apenas uma linha de cabo de ponta a ponta.</li>
-                                <li><strong>Montagem Linear:</strong> Perfeito para esteiras de transporte longas, onde os sensores e atuadores estão distribuídos sequencialmente em linha reta.</li>
+                                <li>Infraestrutura Enxuta: Requer pouquíssimo cabeamento, otimizando o custo por metro linear.</li>
+                                <li>Expansão Modular: Simplicidade absoluta de inclusão de novos nós ao longo de linhas contínuas.</li>
                             </ul>
                         </div>
-                        <div class="panel cons">
-                            <h4>✗ Desvantagens no Chão de Fábrica</h4>
+                        <div class="report-pane cons">
+                            <h5>✗ Vulnerabilidades de Engenharia</h5>
                             <ul>
-                                <li><strong>Efeito Cascata:</strong> Se o cabo central romper em qualquer ponto, todos os dispositivos localizados após o corte perdem a comunicação.</li>
-                                <li><strong>Diagnóstico Difícil:</strong> Um mau contato ou curto em um conector pode derrubar o barramento inteiro, forçando o técnico a testar máquina por máquina.</li>
+                                <li>Reflexão de Sinal: Um corte ou curto em qualquer ponto derruba ou corrompe a rede completa.</li>
+                                <li>Troubleshooting Complexo: Dificuldade extrema de localizar fisicamente emendas oxidadas ou mau contato.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <div id="info-anel" class="topo-info">
-                    <h3>Layout em Anel (Ring Topology)</h3>
-                    <span class="protocol-badge">Alta Disponibilidade e Segurança Crítica</span>
-                    <p><strong>Como funciona:</strong> Os Switches ou dispositivos fecham um circuito fechado (um círculo). Os dados trafegam por um caminho principal, mas se houver um rompimento de cabo, os Switches gerenciam a rede automaticamente para enviar as informações pelo caminho inverso.</p>
+                <div id="info-anel" class="topo-display">
+                    <h3>Arquitetura de Alta Disponibilidade em Anel</h3>
+                    <div class="badge-tech">DESIGN: REDUNDANT LOOP // MRP & DLR PROT</div>
+                    <p style="color: var(--text-muted);">Os switches fecham um circuito circular lógico/físico. Protocolos dedicados gerenciam a rede para que ela mude a rota dos pacotes de dados instantaneamente caso o anel se rompa.</p>
                     
-                    <div class="pros-cons-grid">
-                        <div class="panel pros">
-                            <h4>✓ Vantagens no Chão de Fábrica</h4>
+                    <div class="report-grid">
+                        <div class="report-pane pros">
+                            <h5>✓ Vantagens Operacionais</h5>
                             <ul>
-                                <li><strong>Tolerância a Falhas (Redundância):</strong> A rede pode sofrer a quebra completa de um cabo e nenhuma máquina para de funcionar. O tempo de recuperação (recuperação do anel) ocorre em milissegundos.</li>
-                                <li><strong>Segurança Operacional:</strong> Ideal para processos químicos, siderúrgicos ou linhas que geram grandes prejuízos financeiros caso fiquem paradas por minutos.</li>
+                                <li>Resiliência Crítica: Suporta a quebra integral de um cabo sem ocasionar nenhum minuto de parada de processo.</li>
+                                <li>Recuperação Ultrarrápida: Chaveamento automático de rota na casa dos milissegundos.</li>
                             </ul>
                         </div>
-                        <div class="panel cons">
-                            <h4>✗ Desvantagens no Chão de Fábrica</h4>
+                        <div class="report-pane cons">
+                            <h5>✗ Vulnerabilidades de Engenharia</h5>
                             <ul>
-                                <li><strong>Hardware Especializado:</strong> Requer switches industriais gerenciáveis mais caros, compatíveis com protocolos de anel específicos.</li>
-                                <li><strong>Complexidade de Configuração:</strong> Exige parametrização de software de rede para evitar "loops" (tempestades de dados que travam a rede se o anel não for gerenciado corretamente).</li>
+                                <li>Custo de Hardware: Demanda switches gerenciáveis industriais de alto desempenho.</li>
+                                <li>Risco de Loop de Rede: Configurações incorretas de software podem causar tempestades de pacotes e travar os CLPs.</li>
                             </ul>
                         </div>
                     </div>
@@ -477,15 +644,15 @@
 
         function showCabo(caboId, card) {
             document.querySelectorAll('.cabo-card').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.cabo-text').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.spec-window').forEach(el => el.classList.remove('active'));
             
             card.classList.add('active');
             document.getElementById('text-' + caboId).classList.add('active');
         }
 
         function showTopo(topoId, btn) {
-            document.querySelectorAll('.topo-btn').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.topo-info').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.topo-select-btn').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.topo-display').forEach(el => el.classList.remove('active'));
             
             btn.classList.add('active');
             document.getElementById('info-' + topoId).classList.add('active');
